@@ -1,0 +1,7 @@
+A user must create an account and login
+A user can organize an event
+A user can cancel or update an event he organized
+A User can register for an event(Buy a ticket)
+
+
+

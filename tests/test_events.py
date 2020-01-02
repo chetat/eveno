@@ -1,7 +1,7 @@
 
 from app import create_app, sqlalchemy as db
 from app.config import TestingConfig
-from model import Users
+from model.Events import Events
 import unittest
 
 
@@ -22,13 +22,17 @@ class EventAppTestCase(unittest.TestCase):
 
     def test_given_behavior(self):
         """Test create user endpoint """
-        res = self.client().post('api/v1/users',  json = self.user)
+        res = self.client().post('api/v1/events',  json = self.user)
         self.assertEqual(res.status_code, 201)
+        
+    def test_invalid_userid(self):
+        err = self.client().post(f'api/v1/events/{id}', json = {'id': id})
+        self.assertEqual()
         print("\nCreating new Users ==============")
 
-    def test_get_all_users(self):
+    def test_get_all_events(self):
         """Test create user endpoint """
-        res = self.client().get('api/v1/users')
+        res = self.client().get('api/v1/events')
         print("Getting Users ==============")
         self.assertEqual(res.status_code, 200)
         self.assertEqual(res.json['success'], True)

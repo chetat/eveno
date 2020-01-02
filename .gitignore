@@ -112,3 +112,14 @@ __pycache__*
 .idea/
 *.pem
 .vscode/
+
+Identify the sum of the numbers that make up a number.
+
+Input: an integer n> 0.
+Output: an integer result> 0. The output must be formatted with a line-feed character (or carriage-return) at the end of the line (see code already given).
+
+Examples:
+For n = 10, the result is: 1.
+For n = 323, the result is: 8.
+
+ 

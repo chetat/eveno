@@ -8,6 +8,8 @@ class Config(object):
     #Signal application everytime there is a change in Database
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DATABASE_CONNECT_OPTIONS = {}
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db') or \
+        os.environ.get('DATABASE_URI')
 
     # Application threads. A common general assumption is
     # using 2 per available processor cores - to handle
@@ -26,16 +28,10 @@ class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY')
 
 class DevelopmentConfig(Config):
-    # Statement for enabling the development environment
+    #Statement for enabling the development environment
     ENV="development"
 
-     # Define the database - we are working with
-    # SQLite for this example
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'app.db') or \
-        os.environ.get('DATABASE_URI')
+
 
 class TestingConfig(Config):
-    # Statement for enabling the development environment
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'testdb.db') or \
-        os.environ.get('DATABASE_URI')
     TESTING = True
