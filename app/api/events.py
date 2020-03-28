@@ -21,12 +21,12 @@ def api_error(error):
 
 @api.route("/events", methods=["POST"])
 def new_event():
-    return jsonify({"events":"new events"})
+    return jsonify({"events": "new events"})
 
 
 @api.route("/events", methods=["GET"])
 def retrieve_all_events():
-    return jsonify({"all":"all  events"})
+    return jsonify({"all": "all  events"})
 
 
 @api.route("/events/<event_id>", methods=["GET"])
@@ -42,4 +42,3 @@ def update_event_info(event_id):
 @api.route("/events/<event_id>", methods=["DELETE"])
 def delete_event(event_id):
     return jsonify({"delted": "deleted event"})
-

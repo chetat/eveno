@@ -18,10 +18,9 @@ def api_error(error):
     return jsonify(payload), error.status_code
 
 
-
 @api.route('/users', methods=['POST'])
 def new_user():
-    """Create new users 
+    """Create new users
     return: user access token
     """
     if request.method != 'POST':
@@ -35,28 +34,35 @@ def new_user():
     user_exist = Users.query.filter_by(email=email).first()
 
     if user_exist:
-        raise ExistingResource(f"User with email {email} and number {phone} exist!")
+        raise ExistingResource(
+            f"User with email {email} and number {phone} exist!")
 
-    user = Users(first_name=firstname, last_name=lastname, email=email, phone=phone)
-    
+    user = Users(first_name=firstname, last_name=lastname,
+                 email=email, phone=phone)
     try:
         db.session.add(user)
         db.session.commit()
-    except:
+    except Exception as e:
+        print(e)
         db.session.rollback()
         raise InternalServerError("Could not process your request!")
     """finally:
-        db.session.close()"""  
-        #Closing session here will cause errors in testing because it will be prematured
+        db.session.close()"""
+    """Closing session here will cause errors
+     in testing because it will be prematured"""
 
-    return jsonify(user.serialize),201
+    return jsonify(user.serialize), 201
 
 
 @api.route('/users', methods=['GET'])
 def get_all_users():
     try:
         users = Users.query.all()
-    except:
-        raise InternalServerError("Internal Server Error! Could not retrieve users.")
+    except Exception as e:
+        print(e)
+        raise InternalServerError(
+            "Internal Server Error! Could not retrieve users.")
 
-    return jsonify({"success": True,"data":[user.serialize for user in users]})
+    return jsonify({"success": True,
+                    "data": [user.serialize for user in users]
+                    })

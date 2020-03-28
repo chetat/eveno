@@ -2,6 +2,7 @@ from app import sqlalchemy as db, create_app
 from json import JSONEncoder
 from datetime import datetime
 
+
 class EventType(db.Model):
     __table__ = 'event_type'
     id = db.Column(db.Integer, primary_key=True)
@@ -16,7 +17,7 @@ class EventType(db.Model):
     @property
     def serialize(self):
         return {
-            "id":self.id,
+            "id": self.id,
             "name": self.name,
             "description": self.description,
             "created_at": self.create_at,

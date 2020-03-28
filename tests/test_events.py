@@ -5,28 +5,27 @@ from model.Events import Events
 import unittest
 
 
-
-
-
 class EventAppTestCase(unittest.TestCase):
     """This class represents the Event App test case"""
 
     def setUp(self):
-        """Executed before each test. Define test variables and initialize app."""
+        """Executed before each test.
+         Define test variables and initialize app."""
         self.app = create_app(TestingConfig)
         self.client = self.app.test_client
-        self.user = {"firstname":"chetat", "lastname":"Wilfred","email":"yekuwilfre@gmail.com", "phone": "671357962"}
-        
+        self.user = {"firstname": "chetat", "lastname": "Wilfred",
+                     "email": "yekuwilfre@gmail.com", "phone": "671357962"}
+
         with self.app.app_context():
             db.create_all()
 
     def test_given_behavior(self):
         """Test create user endpoint """
-        res = self.client().post('api/v1/events',  json = self.user)
+        res = self.client().post('api/v1/events',  json=self.user)
         self.assertEqual(res.status_code, 201)
-        
+
     def test_invalid_userid(self):
-        err = self.client().post(f'api/v1/events/{id}', json = {'id': id})
+        err = self.client().post(f'api/v1/events/{id}', json={'id': id})
         self.assertEqual()
         print("\nCreating new Users ==============")
 
@@ -40,9 +39,11 @@ class EventAppTestCase(unittest.TestCase):
     def tearDown(self):
         """Executed after reach test"""
         with self.app.app_context():
-            #Drop all tables
+            # Drop all tables
             db.session.remove()
             db.drop_all()
+
+
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

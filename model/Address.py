@@ -15,7 +15,7 @@ class Address(db.Model):
 
     def __repr__(self):
         return f"<Address {self.id} {self.city}>"
-    
+
     @property
     def serialize(self):
         return {
