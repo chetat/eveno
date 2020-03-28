@@ -3,13 +3,7 @@ from flask import jsonify
 # Error handler
 
 
-class AuthError(Exception):
-    def __init__(self, error, status_code):
-        self.error = error
-        self.status_code = status_code
-
-
-class BadRequest(Exception):
+class AppErrorRequest(Exception):
     status_code = 400
 
     def __init__(self, message, success=False, status_code=None, payload=None):
@@ -28,25 +22,33 @@ class BadRequest(Exception):
         return rv
 
 
-class ExistingResource(BadRequest):
-    status_code = 409
-
-
-class UnAuthorized(BadRequest):
+class AuthError(AppErrorRequest):
     status_code = 401
 
 
-class NotFound(BadRequest):
+class ExistingResource(AppErrorRequest):
+    status_code = 409
+
+
+class UnAuthorized(AppErrorRequest):
+    status_code = 401
+
+
+class NotFound(AppErrorRequest):
     status_code = 404
 
 
-class InternalServerError(BadRequest):
+class InternalServerError(AppErrorRequest):
     status_code = 500
 
 
-class MethodNotAllowed(BadRequest):
+class MethodNotAllowed(AppErrorRequest):
     status_code = 405
 
 
-class Forbiden(BadRequest):
+class Forbiden(AppErrorRequest):
     status_code = 403
+
+
+class BadRequest(AppErrorRequest):
+    status_code = 400

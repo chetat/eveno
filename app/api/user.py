@@ -2,7 +2,8 @@ from app.api import api
 from flask import jsonify, request
 from model.Users import db, Users
 from Exceptions import NotFound, MethodNotAllowed, \
-    Forbiden, InternalServerError, ExistingResource
+    Forbiden, InternalServerError, ExistingResource, AuthError
+from .authhelpers import requires_auth
 
 
 @api.errorhandler(NotFound)
@@ -10,6 +11,7 @@ from Exceptions import NotFound, MethodNotAllowed, \
 @api.errorhandler(MethodNotAllowed)
 @api.errorhandler(InternalServerError)
 @api.errorhandler(ExistingResource)
+@api.errorhandler(AuthError)
 def api_error(error):
     payload = dict(error.payload or ())
     payload['code'] = error.status_code
@@ -55,6 +57,7 @@ def new_user():
 
 
 @api.route('/users', methods=['GET'])
+@requires_auth("read:users")
 def get_all_users():
     try:
         users = Users.query.all()
