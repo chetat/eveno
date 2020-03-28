@@ -6,7 +6,6 @@ from Exceptions import NotFound, MethodNotAllowed, \
 from .authhelpers import requires_auth
 
 
-
 @api.errorhandler(NotFound)
 @api.errorhandler(Forbiden)
 @api.errorhandler(MethodNotAllowed)
