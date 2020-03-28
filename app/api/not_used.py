@@ -1,6 +1,6 @@
 from app.api import api
 from flask import jsonify, request
-from model.Users import db, Users
+from models import db, Events
 from Exceptions import NotFound, MethodNotAllowed, \
     Forbiden, InternalServerError, ExistingResource, AuthError
 from .authhelpers import requires_auth
@@ -58,9 +58,9 @@ def new_user():
 
 @api.route('/users', methods=['GET'])
 @requires_auth("read:users")
-def get_all_users():
+def get_all_users(token):
     try:
-        users = Users.query.all()
+        users = Events.query.all()
     except Exception as e:
         print(e)
         raise InternalServerError(
@@ -69,3 +69,8 @@ def get_all_users():
     return jsonify({"success": True,
                     "data": [user.serialize for user in users]
                     })
+
+
+@api.route('/token/<token>', methods=['GET'])
+def get_token(token):
+    print(token)

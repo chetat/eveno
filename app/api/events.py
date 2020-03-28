@@ -1,9 +1,10 @@
 from app.api import api
 from flask import jsonify, request
-from model.Users import db, Users
-from model.Events import EventType
+from models import db, Events, EventType
 from Exceptions import NotFound, MethodNotAllowed, \
-    Forbiden, InternalServerError, ExistingResource
+    Forbiden, InternalServerError, ExistingResource, AuthError
+from .authhelpers import requires_auth
+
 
 
 @api.errorhandler(NotFound)
@@ -20,25 +21,39 @@ def api_error(error):
 
 
 @api.route("/events", methods=["POST"])
-def new_event():
+@requires_auth("create:events")
+def new_event(token):
     return jsonify({"events": "new events"})
 
 
 @api.route("/events", methods=["GET"])
-def retrieve_all_events():
-    return jsonify({"all": "all  events"})
+@requires_auth("read:events")
+def retrieve_all_events(token):
+    try:
+        users = Events.query.all()
+    except Exception as e:
+        print(e)
+        raise InternalServerError(
+            "Internal Server Error! Could not retrieve users.")
+
+    return jsonify({"success": True,
+                    "data": [user.serialize for user in users]
+                    })
 
 
 @api.route("/events/<event_id>", methods=["GET"])
-def retrieve_single_event(event_id):
+@requires_auth("read:events")
+def retrieve_single_event(token, event_id):
     return jsonify({"single": "Single event retrieved"})
 
 
 @api.route("/events/<event_id>", methods=["PATCH"])
-def update_event_info(event_id):
+@requires_auth("update:events")
+def update_event_info(token, event_id):
     return jsonify({"update": "Updated Event"})
 
 
 @api.route("/events/<event_id>", methods=["DELETE"])
-def delete_event(event_id):
+@requires_auth("delete:events")
+def delete_event(token, event_id):
     return jsonify({"delted": "deleted event"})
