@@ -4,4 +4,158 @@ A user can cancel or update an event he organized
 A User can register for an event(Buy a ticket)
 
 
+POST /events/types
 
+payload:
+{
+	"name": "Amusement",
+	"description": "An event related to fun time and amusement"
+}
+
+Response: 
+{
+  "created_at": "Mon, 30 Mar 2020 03:57:44 GMT",
+  "description": "An event related to fun time and amusement",
+  "id": 1,
+  "name": "Amusement",
+  "updated_at": "Mon, 30 Mar 2020 03:57:44 GMT"
+}
+
+
+POST /events
+payload:
+{
+	"title": "Markup Start",
+	"description": "This is an event I am creating for meeting with friends",
+	"start_datetime": "2020-05-30 15:45",
+	"location": "Douala Bonamoussadi",
+	"price": 2000,
+	"event_type_id": 1
+}
+
+Response:
+{
+  "data": {
+    "address": "Douala Bonamoussadi",
+    "description": "This is an event I am creating for meeting with friends",
+    "event_type": "Amusement",
+    "id": 14,
+    "image_url": null,
+    "price": 2000.0,
+    "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+    "title": "Markup Start"
+  },
+  "success": true
+}
+
+GET /events
+
+Response:
+{
+  "data": [
+    {
+      "address": "Douala Bonamoussadi",
+      "description": "This is an event I am creating for meeting with friends",
+      "event_type": "Amusement",
+      "id": 1,
+      "image_url": null,
+      "price": 2000.0,
+      "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+      "title": "Markup Start"
+    },
+    {
+      "address": "Douala Bonamoussadi",
+      "description": "This is an event I am creating for meeting with friends",
+      "event_type": "Amusement",
+      "id": 2,
+      "image_url": null,
+      "price": 2000.0,
+      "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+      "title": "Markup Start"
+    },
+    {
+      "address": "Douala Bonamoussadi",
+      "description": "This is an event I am creating for meeting with friends",
+      "event_type": "Amusement",
+      "id": 3,
+      "image_url": null,
+      "price": 2000.0,
+      "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+      "title": "Markup Start"
+    },
+    {
+      "address": "Douala Bonamoussadi",
+      "description": "This is an event I am creating for meeting with friends",
+      "event_type": "Amusement",
+      "id": 4,
+      "image_url": null,
+      "price": 2000.0,
+      "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+      "title": "Markup Start"
+    },
+    {
+      "address": "Douala Bonamoussadi",
+      "description": "This is an event I am creating for meeting with friends",
+      "event_type": "Amusement",
+      "id": 13,
+      "image_url": null,
+      "price": 2000.0,
+      "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+      "title": "Markup Start"
+    }
+  ],
+  "success": true
+}
+
+GET /events/{event_id}
+
+Response:
+{
+  "data": {
+    "address": "Douala Bonamoussadi",
+    "description": "This is an event I am creating for meeting with friends",
+    "event_type": "Amusement",
+    "id": 1,
+    "image_url": null,
+    "price": 2000.0,
+    "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+    "title": "Markup Start"
+  },
+  "success": true
+}
+
+PATCH /events/{event_id}
+
+Payload:
+{
+	"title": "Markup Start",
+	"description": "This is an event I am creating for meeting with friends",
+	"start_datetime": "2020-05-30 15:45",
+	"location": "Douala Bonamoussadi",
+	"price": 2500,
+	"event_type_id": 1
+}
+
+Response: 
+{
+  "data": {
+    "address": "Douala Bonamoussadi",
+    "description": "This is an event I am creating for meeting with friends",
+    "event_type": "Amusement",
+    "id": 1,
+    "image_url": null,
+    "price": 2500.0,
+    "start_date": "Sat, 30 May 2020 15:45:00 GMT",
+    "title": "Markup Start"
+  },
+  "success": true
+}
+
+
+DELETE /events/{event_id}
+
+Response:
+{
+  "deleted": "8",
+  "success": true
+}

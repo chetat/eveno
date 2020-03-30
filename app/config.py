@@ -17,16 +17,6 @@ class Config(object):
     # operations using the other.
     THREADS_PER_PAGE = 2
 
-    # Enable protection agains *Cross-site Request Forgery (CSRF)*
-    CSRF_ENABLED = True
-
-    # Use a secure, unique and absolutely secret key for
-    # signing the data.
-    CSRF_SESSION_KEY = os.environ.get('SECRET_KEY')
-
-    # Secret key for signing cookies
-    SECRET_KEY = os.environ.get('SECRET_KEY')
-
 
 class DevelopmentConfig(Config):
     # Statement for enabling the development environment
@@ -35,3 +25,4 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    SQLALCHEMY_DATABASE_URI = os.environ.get('TEST_DATABASE_URI')

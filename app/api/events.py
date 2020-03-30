@@ -20,39 +20,120 @@ def api_error(error):
 
 
 @api.route("/events", methods=["POST"])
-@requires_auth("create:events")
-def new_event(token):
-    return jsonify({"events": "new events"})
+# @requires_auth("create:events")
+def new_event():
+    title = request.get_json()["title"]
+    description = request.get_json()["description"]
+    event_datetime = request.get_json()["start_datetime"]
+    event_location = request.get_json()["location"]
+    attendance_price = request.get_json()["price"]
+    event_type_id = request.get_json()["event_type_id"]
 
-
-@api.route("/events", methods=["GET"])
-@requires_auth("read:events")
-def retrieve_all_events(token):
     try:
-        users = Events.query.all()
+        new_event = Events(title=title, description=description,
+                           start_date_time=event_datetime,
+                           address=event_location,
+                           price=attendance_price, event_type_id=event_type_id)
+        db.session.add(new_event)
+        db.session.commit()
+        return jsonify(
+                        {
+                            "success": True,
+                            "data": new_event.serialize
+                        }
+                    )
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        raise InternalServerError("Something went wrong on server")
+
+
+@api.route("/events")
+# @requires_auth("read:events")
+def retrieve_all_events():
+    try:
+        events = Events.query.all()
+        return jsonify(
+            {
+              "success": True,
+              "data": [event.serialize for event in events]
+            })
     except Exception as e:
         print(e)
         raise InternalServerError(
-            "Internal Server Error! Could not retrieve users.")
-
-    return jsonify({"success": True,
-                    "data": [user.serialize for user in users]
-                    })
+            "Internal Server Error! Could not retrieve events.")
 
 
 @api.route("/events/<event_id>", methods=["GET"])
-@requires_auth("read:events")
-def retrieve_single_event(token, event_id):
-    return jsonify({"single": "Single event retrieved"})
+#@requires_auth("read:events")
+def retrieve_single_event(event_id):
+    try:
+        event = Events.query.filter_by(id=event_id).first()
+    except Exception as e:
+        print(e)
+        raise InternalServerError(
+            "Internal Server Error! Could not retrieve events.")
+    if not event:
+        raise NotFound(f"Event with Id = {event_id} not found")
+    else:
+        return jsonify(
+                    {
+                        "success": True,
+                        "data": event.serialize
+                    })
 
 
 @api.route("/events/<event_id>", methods=["PATCH"])
-@requires_auth("update:events")
-def update_event_info(token, event_id):
-    return jsonify({"update": "Updated Event"})
+# @requires_auth("update:events")
+def update_event_info(event_id):
+    title = request.get_json()["title"]
+    description = request.get_json()["description"]
+    event_datetime = request.get_json()["start_datetime"]
+    event_location = request.get_json()["location"]
+    attendance_price = request.get_json()["price"]
+    event_type_id = request.get_json()["event_type_id"]
+
+    try:
+        event = Events.query.filter_by(id=event_id).first()
+    except Exception as e:
+        print(e)
+        raise InternalServerError(
+            "Internal Server Error! Could not retrieve events.")
+    if not event:
+        raise NotFound(f"Event with Id = {event_id} not found")
+    else:
+        event.title = title
+        event.description = description
+        event.start_date_time = event_datetime
+        event.location = event_location
+        event.price = attendance_price
+        event.event_type_id = event_type_id
+
+        db.session.add(event)
+        db.session.commit()
+        return jsonify(
+                    {
+                        "success": True,
+                        "data": event.serialize
+                    })
 
 
 @api.route("/events/<event_id>", methods=["DELETE"])
-@requires_auth("delete:events")
-def delete_event(token, event_id):
-    return jsonify({"delted": "deleted event"})
+# @requires_auth("delete:events")
+def delete_event(event_id):
+    try:
+        event = Events.query.filter_by(id=event_id).first()
+    except Exception as e:
+        print(e)
+        raise InternalServerError(
+            "Internal Server Error! Could not retrieve events.")
+    if not event:
+        raise NotFound(f"Event with Id {event_id} not found")
+    else:
+        db.session.delete(event)
+        db.session.commit()
+        return jsonify(
+                    {
+                        "success": True,
+                        "deleted": event_id,
+                    }), 200
