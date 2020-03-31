@@ -2,7 +2,8 @@ from app.api import api
 from flask import jsonify, request
 from models import db, EventType
 from Exceptions import NotFound, MethodNotAllowed, \
-    Forbiden, InternalServerError, ExistingResource, AuthError
+    Forbiden, InternalServerError, ExistingResource,\
+    BadRequest, AuthError
 from .authhelpers import requires_auth
 
 
@@ -22,10 +23,12 @@ def api_error(error):
 @api.route("/events/types", methods=["POST"])
 # @requires_auth("create:events")
 def new_event_type():
-    name = request.get_json()["name"]
-    description = request.get_json()["description"]
+    name = request.json.get("name")
+    description = request.json.get("description")
 
-    event_type = None
+    if not name or not description:
+        raise BadRequest("Invalid body provided")
+
     try:
         new_event_type = EventType(name=name, description=description)
         db.session.add(new_event_type)
@@ -52,7 +55,7 @@ def retrieve_all_events_types():
             "success": True,
             "data": [event_type.serialize for event_type in event_types]
         }
-                )
+    )
 
 
 @api.route("/events/types/<type_id>")
@@ -67,18 +70,21 @@ def get_event_type(type_id):
         raise NotFound(f"Event with Id {type_id} not found")
     else:
         return jsonify(
-                    {
-                        "success": True,
-                        "deleted": event_type.serialize
-                    }
-                        )
+            {
+                "success": True,
+                "data": event_type.serialize
+            }
+        )
 
 
 @api.route("/events/types/<type_id>", methods=["PATCH"])
 # @requires_auth("update:events")
 def update_event_type(type_id):
-    name = request.get_json()["title"]
-    description = request.get_json()["description"]
+    name = request.json.get("name")
+    description = request.json.get("description")
+
+    if not name or not description:
+        raise BadRequest("Invalid body provided")
 
     try:
         event_type = EventType.query.filter_by(id=type_id).first()
@@ -95,10 +101,10 @@ def update_event_type(type_id):
         db.session.add(event_type)
         db.session.commit()
         return jsonify(
-                    {
-                        "success": True,
-                        "data": event_type.serialize
-                    })
+            {
+                "success": True,
+                "data": event_type.serialize
+            })
 
 
 @api.route("/events/types/<type_id>", methods=["DELETE"])
@@ -116,7 +122,7 @@ def delete_event_type(type_id):
         db.session.delete(event_type)
         db.session.commit()
         return jsonify(
-                    {
-                        "success": True,
-                        "deleted": type_id,
-                    }), 200
+            {
+                "success": True,
+                "deleted": type_id,
+            }), 200

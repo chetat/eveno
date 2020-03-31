@@ -2,15 +2,15 @@ from app.api import api
 from flask import jsonify, request
 from models import db, Events, EventType
 from Exceptions import NotFound, MethodNotAllowed, \
-    Forbiden, InternalServerError, ExistingResource, AuthError
+    Forbiden, InternalServerError, ExistingResource,\
+    BadRequest, AuthError
 from .authhelpers import requires_auth
 
 
 @api.errorhandler(NotFound)
 @api.errorhandler(Forbiden)
-@api.errorhandler(MethodNotAllowed)
+@api.errorhandler(405)
 @api.errorhandler(InternalServerError)
-@api.errorhandler(ExistingResource)
 def api_error(error):
     payload = dict(error.payload or ())
     payload['code'] = error.status_code
@@ -22,12 +22,16 @@ def api_error(error):
 @api.route("/events", methods=["POST"])
 # @requires_auth("create:events")
 def new_event():
-    title = request.get_json()["title"]
-    description = request.get_json()["description"]
-    event_datetime = request.get_json()["start_datetime"]
-    event_location = request.get_json()["location"]
-    attendance_price = request.get_json()["price"]
-    event_type_id = request.get_json()["event_type_id"]
+    title = request.json.get("title")
+    description = request.json.get("description")
+    event_datetime = request.json.get("start_datetime")
+    event_location = request.json.get("location")
+    attendance_price = request.json.get("price")
+    event_type_id = request.json.get("event_type_id")
+
+    if not title or not description or not event_datetime \
+            or not event_location or not event_type_id:
+        raise BadRequest("Invalid body parameters")
 
     try:
         new_event = Events(title=title, description=description,
@@ -37,15 +41,15 @@ def new_event():
         db.session.add(new_event)
         db.session.commit()
         return jsonify(
-                        {
-                            "success": True,
-                            "data": new_event.serialize
-                        }
-                    )
+            {
+                "success": True,
+                "data": new_event.serialize
+            }
+        )
     except Exception as e:
         print(e)
         db.session.rollback()
-        raise InternalServerError("Something went wrong on server")
+        raise InternalServerError(f"Something went wrong on server: {str(e)}")
 
 
 @api.route("/events")
@@ -55,8 +59,8 @@ def retrieve_all_events():
         events = Events.query.all()
         return jsonify(
             {
-              "success": True,
-              "data": [event.serialize for event in events]
+                "success": True,
+                "data": [event.serialize for event in events]
             })
     except Exception as e:
         print(e)
@@ -77,21 +81,25 @@ def retrieve_single_event(event_id):
         raise NotFound(f"Event with Id = {event_id} not found")
     else:
         return jsonify(
-                    {
-                        "success": True,
-                        "data": event.serialize
-                    })
+            {
+                "success": True,
+                "data": event.serialize
+            })
 
 
 @api.route("/events/<event_id>", methods=["PATCH"])
 # @requires_auth("update:events")
 def update_event_info(event_id):
-    title = request.get_json()["title"]
-    description = request.get_json()["description"]
-    event_datetime = request.get_json()["start_datetime"]
-    event_location = request.get_json()["location"]
-    attendance_price = request.get_json()["price"]
-    event_type_id = request.get_json()["event_type_id"]
+    title = request.json.get("title")
+    description = request.json.get("description")
+    event_datetime = request.json.get("start_datetime")
+    event_location = request.json.get("location")
+    attendance_price = request.json.get("price")
+    event_type_id = request.json.get("event_type_id")
+
+    if not title or not description or not event_datetime \
+            or not event_location or not event_type_id:
+        raise BadRequest("Invalid body parameters")
 
     try:
         event = Events.query.filter_by(id=event_id).first()
@@ -112,10 +120,10 @@ def update_event_info(event_id):
         db.session.add(event)
         db.session.commit()
         return jsonify(
-                    {
-                        "success": True,
-                        "data": event.serialize
-                    })
+            {
+                "success": True,
+                "data": event.serialize
+            })
 
 
 @api.route("/events/<event_id>", methods=["DELETE"])
@@ -133,7 +141,7 @@ def delete_event(event_id):
         db.session.delete(event)
         db.session.commit()
         return jsonify(
-                    {
-                        "success": True,
-                        "deleted": event_id,
-                    }), 200
+            {
+                "success": True,
+                "deleted": event_id,
+            }), 200
