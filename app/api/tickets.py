@@ -43,8 +43,7 @@ def new_ticket():
 
     try:
         new_ticket = Tickets(event_id=event_id, attender_email=attender_email)
-        db.session.add(new_ticket)
-        db.session.commit()
+        Tickets.insert(new_ticket)
         return jsonify({
             "success": True,
             "data": new_ticket.serialize

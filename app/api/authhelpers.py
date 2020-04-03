@@ -3,8 +3,7 @@ from app.api import api
 from flask import jsonify, request, _request_ctx_stack
 import json
 
-from Exceptions import NotFound, MethodNotAllowed, \
-    Forbiden, InternalServerError, ExistingResource, AuthError
+from Exceptions import AuthError
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen

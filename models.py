@@ -14,6 +14,17 @@ class EventType(db.Model):
     def __repr__(self):
         return f"<EventType {self.id} {self.name}>"
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
     @property
     def serialize(self):
         return {
@@ -40,6 +51,18 @@ class Events(db.Model):
     def __repr__(self):
         return f"<Events {self.id} {self.title}>"
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.add(self)
+        db.session.commit()
+
     @property
     def serialize(self):
         return {
@@ -65,6 +88,10 @@ class Tickets(db.Model):
     def __repr__(self):
         return f"<Ticket {self.id} {self.event_id}> "
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
     @property
     def serialize(self):
         return {
@@ -74,3 +101,62 @@ class Tickets(db.Model):
             "created_at": self.create_at,
             "updated_at": self.updated_at
         }
+
+
+def initialize_db():
+    # Initial Events
+    event_1 = Events(
+        title="Markup Start",
+        description="This is an event I am creating for meeting with friends",
+        start_date_time="2020-05-30 15:45",
+        address="Douala Bonamoussadi",
+        price=2000,
+        event_type_id=2
+    )
+    event_2 = Events(
+        title="Markup Start",
+        description="This is an event I am creating for meeting with friends",
+        start_date_time="2020-05-30 15:45",
+        address="Douala Makepe",
+        price=5000,
+        event_type_id=1
+    )
+    event_3 = Events(
+        title="Markup Start",
+        description="This is an event I am creating for meeting with friends",
+        start_date_time="2020-05-30 15:45",
+        address="Douala Bonamoussadi",
+        price=2000,
+        event_type_id=1
+    )
+
+    event_type_1 = EventType(
+        name="TechEvent",
+        description="An event related to tech talks and Python programming"
+    )
+    event_type_2 = EventType(
+        name="gaming",
+        description="An event related Game players and Games"
+    )
+
+    ticket_1 = Tickets(
+        event_id=1,
+        attender_email="yekuwilfred@gmail.com"
+    )
+    ticket_2 = Tickets(
+        event_id=2,
+        attender_email="chetat@gmail.com"
+    )
+
+    # Create Event types
+    EventType.insert(event_type_1)
+    EventType.insert(event_type_2)
+
+    # Create new events
+    Events.insert(event_1)
+    Events.insert(event_2)
+    Events.insert(event_3)
+
+    # Create new tickets
+    Tickets.insert(ticket_1)
+    Tickets.insert(ticket_2)

@@ -4,7 +4,7 @@ from app import create_app, sqlalchemy as db
 from sqlalchemy import create_engine, text
 from flask_sqlalchemy import SQLAlchemy
 from app.config import TestingConfig
-from models import Events, Tickets, EventType
+from models import initialize_db
 import unittest
 
 
@@ -41,10 +41,12 @@ class EventAppTestCase(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
+            initialize_db()
 
     def tearDown(self):
-        pass
-
+        with self.app.app_context():
+            db.session.remove()
+            db.drop_all()
 
     """
     ===========================================
@@ -60,14 +62,14 @@ class EventAppTestCase(unittest.TestCase):
         """
         Test Update single event_type success
         """
-        res = self.client().patch("/api/v1/events/types/12", json=self.event_t)
+        res = self.client().patch("/api/v1/events/types/2", json=self.event_t)
         self.assertEqual(res.status_code, 200)
 
     def test_get_event_type(self):
         """
         Test get single event_type success
         """
-        res = self.client().get("/api/v1/events/types/5")
+        res = self.client().get("/api/v1/events/types/2")
         self.assertEqual(res.status_code, 200)
 
     def test_get_all_event_types(self):
@@ -83,7 +85,7 @@ class EventAppTestCase(unittest.TestCase):
         """
         Test delete event_type success
         """
-        res = self.client().delete("/api/v1/events/types/9")
+        res = self.client().delete("/api/v1/events/types/1")
         self.assertEqual(res.status_code, 200)
 
     def test_create_event_type_fail(self):
