@@ -3,7 +3,6 @@ from json import JSONEncoder
 from datetime import datetime
 
 
-
 class EventType(db.Model):
     __tablename__ = 'event_type'
     id = db.Column(db.Integer, primary_key=True)

@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from pathlib import Path
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-#Load environment variables
+# Load environment variables
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path)
 

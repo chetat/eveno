@@ -80,8 +80,9 @@ def get_event_type(type_id):
 @api.route("/events/types/<type_id>", methods=["PATCH"])
 # @requires_auth("update:events")
 def update_event_type(type_id):
-    name = request.json.get("name")
-    description = request.json.get("description")
+    body = request.get_json()
+    name = body["name"]
+    description = body["description"]
 
     if not name or not description:
         raise BadRequest("Invalid body provided")

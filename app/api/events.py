@@ -68,8 +68,8 @@ def retrieve_all_events():
             "Internal Server Error! Could not retrieve events.")
 
 
-@api.route("/events/<event_id>", methods=["GET"])
-#@requires_auth("read:events")
+@api.route("/events/<event_id>")
+# @requires_auth("read:events")
 def retrieve_single_event(event_id):
     try:
         event = Events.query.filter_by(id=event_id).first()
