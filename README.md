@@ -41,3 +41,120 @@ Each time you open a new terminal session, run:
 export FLASK_APP=run.py 
 export FLASK_ENV=development //To run the app in debugging mode 
 ```
+
+## Roles and Permissions:
+### Administrator
+- Can View all events and Update events
+- Can create, view, update and delete event types.
+- Can view all tickets bought by users
+
+### User
+- Can create, view, update or delete **events**
+- Can view **event types**
+- Can create, and view **tickets**
+
+# Endpoints
+- Base URL: **eveno.herokuapp.com/api/v1/**
+
+**Note:** All endpoints requires Bearer token. JWT tokens are found in token.txt file
+
+- **New Event Type**
+```
+POST /events/types
+
+Payload:
+{
+	"name": "Amusement",
+	"description": "An event related to fun time and amusement"
+}
+```
+
+- **Get all Event Types**
+```
+GET /events/types
+```
+
+- **Get single event type**
+```
+GET /events/types/{event_type_id}
+```
+
+- **Update event type**
+```
+PATCH /events/types/{event_type_id}
+
+{
+	"name": "Pyconf",
+	"description": "Pythoneers and Reacters events"
+}
+```
+
+- **Update event type**
+```
+DELETE /events/types/{event_type_id}
+```
+
+- **New Event**
+```
+POST /events
+
+Payload:
+{
+	"title": "Markup Start",
+	"description": "This is an event I am creating for meeting with friends",
+	"start_datetime": "2020-05-30 15:45",
+	"location": "Douala Bonamoussadi",
+	"price": 2000,
+	"event_type_id": 1
+}
+```
+
+- **Get All Events**
+```
+GET /events
+```
+
+- **Get Event with event_id**
+```
+GET /events/{event_id}
+```
+
+- **Get Event with event_id**
+```
+PATCH /events/{event_id}
+
+Payload:
+{
+	"title": "Markup Start",
+	"description": "This is an event I am creating for meeting with friends",
+	"start_datetime": "2020-05-30 15:45",
+	"location": "Douala Bonamoussadi",
+	"price": 2500,
+	"event_type_id": 2
+}
+```
+
+- **Delete event**
+```
+DELETE /events/{event_id}
+```
+
+- **Create New Ticket**
+```
+POST /events/tickets
+
+Payload:
+{
+	  "event_id": 2,
+    "email": "chetat@gmail.com"
+}
+```
+
+- **Get all Tickets**
+```
+GET /events/tickets
+```
+- **Get single Ticket**
+```
+GET /events/tickets/{ticket_id}
+```

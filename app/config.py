@@ -15,7 +15,6 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DATABASE_CONNECT_OPTIONS = {}
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
-
     # Application threads. A common general assumption is
     # using 2 per available processor cores - to handle
     # incoming requests using one and performing background
