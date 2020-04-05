@@ -158,3 +158,6 @@ GET /events/tickets
 ```
 GET /events/tickets/{ticket_id}
 ```
+
+## Author
+- Yeku Wilfred Chetat
