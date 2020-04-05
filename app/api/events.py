@@ -24,8 +24,8 @@ This endpoint creates a new event
 :return: returns an event json object
 """
 @api.route("/events", methods=["POST"])
-# @requires_auth("create:events")
-def new_event():
+@requires_auth("create:events")
+def new_event(token):
     title = request.json.get("title")
     description = request.json.get("description")
     event_datetime = request.json.get("start_datetime")
@@ -60,8 +60,8 @@ This Retrieve all events types
 :return: returns a list of event json objects
 """
 @api.route("/events")
-# @requires_auth("read:events")
-def retrieve_all_events():
+@requires_auth("read:events")
+def retrieve_all_events(token):
     try:
         events = Events.query.all()
         return jsonify(
@@ -81,8 +81,8 @@ This endpoint get an event with given id
 :return: returns an event json object corresponding to the event id
 """
 @api.route("/events/<event_id>")
-# @requires_auth("read:events")
-def retrieve_single_event(event_id):
+@requires_auth("read:events")
+def retrieve_single_event(token, event_id):
     try:
         event = Events.query.filter_by(id=event_id).first()
     except Exception as e:
@@ -105,8 +105,8 @@ This endpoint update an event with given id
 :return: returns an event json object corresponding to the event id
 """
 @api.route("/events/<event_id>", methods=["PATCH"])
-# @requires_auth("update:events")
-def update_event_info(event_id):
+@requires_auth("update:events")
+def update_event_info(token, event_id):
     title = request.json.get("title")
     description = request.json.get("description")
     event_datetime = request.json.get("start_datetime")
@@ -148,8 +148,8 @@ This endpoint delete an eventwith given id
 :return: returns deleted event Id and success of True
 """
 @api.route("/events/<event_id>", methods=["DELETE"])
-# @requires_auth("delete:events")
-def delete_event(event_id):
+@requires_auth("delete:events")
+def delete_event(token, event_id):
     try:
         event = Events.query.filter_by(id=event_id).first()
     except Exception as e:

@@ -14,8 +14,6 @@ ALGORITHMS = ['RS256']
 API_AUDIENCE = 'eveno-api'
 CLIENT_ID = os.environ["CLIENT_ID"]
 
-# https://dev-b-gpi9-h.auth0.com/authorize?audience=eveno-api&response_type=token&client_id=jcH8UbYzF5WPvLEDoA8sJDhqqEgR36xn&redirect_uri=http://localhost:5000/token
-
 
 def get_token_auth_header():
     auth = request.headers.get("Authorization", None)
@@ -37,10 +35,13 @@ def get_token_auth_header():
 
 
 def check_permissions(permission, payload):
-    if not payload["permissions"]:
-        raise AuthError(401, "UnAuthorized")
-    if permission in payload["permissions"]:
+    permissions = payload["permissions"]
+    if not permissions:
+        raise AuthError("UnAuthorized")
+    if permission in permissions:
         return True
+    else:
+        raise AuthError("UnAuthorized")
 
 
 def verify_decode_jwt(token):

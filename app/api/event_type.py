@@ -11,6 +11,7 @@ from .authhelpers import requires_auth
 @api.errorhandler(Forbiden)
 @api.errorhandler(MethodNotAllowed)
 @api.errorhandler(InternalServerError)
+@api.errorhandler(AuthError)
 @api.errorhandler(ExistingResource)
 def api_error(error):
     payload = dict(error.payload or ())
@@ -25,8 +26,8 @@ This endpoint creates a new event_type
 :return: returns an event_type json object
 """
 @api.route("/events/types", methods=["POST"])
-# @requires_auth("create:events")
-def new_event_type():
+@requires_auth("create:event_types")
+def new_event_type(token):
     name = request.json.get("name")
     description = request.json.get("description")
 
@@ -48,8 +49,8 @@ This Retrieve all events types
 :return: returns a list of event type json objects
 """
 @api.route("/events/types")
-# @requires_auth("read:events")
-def retrieve_all_events_types():
+@requires_auth("read:event_types")
+def retrieve_all_events_types(token):
     try:
         event_types = EventType.query.all()
     except Exception as e:
@@ -72,7 +73,8 @@ This endpoint get an event_type with given id
          the event_type id
 """
 @api.route("/events/types/<type_id>")
-def get_event_type(type_id):
+@requires_auth("read:event_types")
+def get_event_type(token, type_id):
     try:
         event_type = EventType.query.filter_by(id=type_id).first()
     except Exception as e:
@@ -96,8 +98,8 @@ This endpoint Updates an event_type with given id
 :return: returns an event json object
 """
 @api.route("/events/types/<type_id>", methods=["PATCH"])
-# @requires_auth("update:events")
-def update_event_type(type_id):
+@requires_auth("update:event_types")
+def update_event_type(token, type_id):
     body = request.get_json()
     name = body["name"]
     description = body["description"]
@@ -131,8 +133,8 @@ This endpoint delete an event_type with given id
 :return: returns deleted event_type Id and success of True
 """
 @api.route("/events/types/<type_id>", methods=["DELETE"])
-# @requires_auth("delete:events")
-def delete_event_type(type_id):
+@requires_auth("delete:event_types")
+def delete_event_type(token, type_id):
     try:
         event_type = EventType.query.filter_by(id=type_id).first()
     except Exception as e:

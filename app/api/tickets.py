@@ -22,7 +22,8 @@ def api_error(error):
 
 
 @api.route('events/tickets')
-def get_tickets():
+@requires_auth("read:tickets")
+def get_tickets(token):
     try:
         tickets = Tickets.query.all()
         return jsonify({
@@ -34,7 +35,8 @@ def get_tickets():
 
 
 @api.route('events/tickets', methods=["POST"])
-def new_ticket():
+@requires_auth("create:tickets")
+def new_ticket(token):
     event_id = request.json.get("event_id", None)
     attender_email = request.json.get("email", None)
 
@@ -55,7 +57,8 @@ def new_ticket():
 
 
 @api.route('events/tickets/<ticket_id>')
-def get_ticket(ticket_id):
+@requires_auth("read:tickets")
+def get_ticket(token, ticket_id):
     try:
         ticket = Tickets.query.filter_by(id=ticket_id).first()
     except Exception as e:
