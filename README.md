@@ -56,7 +56,7 @@ export FLASK_ENV=development //To run the app in debugging mode
 ## Endpoints
 - Base URL: **eveno.herokuapp.com/api/v1/**
 
-**Note:** All endpoints requires Bearer token. JWT tokens are found in token.txt file
+**Note:** All endpoints requires Bearer token. JWT tokens are found in **token.txt** file in the root directory of this project
 
 - **New Event Type**
 ```
