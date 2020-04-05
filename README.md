@@ -44,16 +44,16 @@ export FLASK_ENV=development //To run the app in debugging mode
 
 ## Roles and Permissions:
 ### Administrator
-- Can View all events and Update events
-- Can create, view, update and delete event types.
-- Can view all tickets bought by users
+- Can View all events and Update **events**
+- Can create, view, update and delete **event types**.
+- Can view all **tickets** bought by users
 
 ### User
 - Can create, view, update or delete **events**
 - Can view **event types**
 - Can create, and view **tickets**
 
-# Endpoints
+## Endpoints
 - Base URL: **eveno.herokuapp.com/api/v1/**
 
 **Note:** All endpoints requires Bearer token. JWT tokens are found in token.txt file
@@ -69,17 +69,17 @@ Payload:
 }
 ```
 
-- **Get all Event Types**
+- **Get All Event Types**
 ```
 GET /events/types
 ```
 
-- **Get single event type**
+- **Get Single Event Type**
 ```
 GET /events/types/{event_type_id}
 ```
 
-- **Update event type**
+- **Update Event Type**
 ```
 PATCH /events/types/{event_type_id}
 
@@ -89,7 +89,7 @@ PATCH /events/types/{event_type_id}
 }
 ```
 
-- **Update event type**
+- **Update Event Type**
 ```
 DELETE /events/types/{event_type_id}
 ```
@@ -114,12 +114,12 @@ Payload:
 GET /events
 ```
 
-- **Get Event with event_id**
+- **Get Event With event_id**
 ```
 GET /events/{event_id}
 ```
 
-- **Get Event with event_id**
+- **Get Event With event_id**
 ```
 PATCH /events/{event_id}
 
@@ -134,7 +134,7 @@ Payload:
 }
 ```
 
-- **Delete event**
+- **Delete Event**
 ```
 DELETE /events/{event_id}
 ```
@@ -150,11 +150,14 @@ Payload:
 }
 ```
 
-- **Get all Tickets**
+- **Get All Tickets**
 ```
 GET /events/tickets
 ```
-- **Get single Ticket**
+- **Get Single Ticket**
 ```
 GET /events/tickets/{ticket_id}
 ```
+
+## Author
+- Yeku Wilfred Chetat
