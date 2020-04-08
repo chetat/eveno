@@ -103,6 +103,44 @@ class Tickets(db.Model):
         }
 
 
+class Users(db.Model):
+    __tablename__ = 'users'
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String())
+    last_name = db.Column(db.String())
+    email = db.Column(db.String(), nullable=False, unique=True)
+    phone = db.Column(db.String())
+    password_hash = db.Column(db.String())
+    created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        db.session.commit()
+
+    @property
+    def serialize(self):
+        return {
+            "id": self.id,
+            "firstname": self.first_name,
+            "lastname": self.last_name,
+            "email": self.email,
+            "phone": self.phone,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
+        }
+
+    def __repr__(self):
+        return f"<User {self.id} {self.name}>"
+
+
 def initialize_db():
     # Initial Events
     event_1 = Events(
