@@ -8,7 +8,7 @@ from models import initialize_db
 import unittest
 
 
-class EventAppTestCase(unittest.TestCase):
+class EventsTestCase(unittest.TestCase):
     """This class represents the Event App test case"""
 
     def setUp(self):
@@ -32,23 +32,13 @@ class EventAppTestCase(unittest.TestCase):
         }
 
         self.ticket = {
-            "event_id": 1,
-            "email": "chetat@gmail.com"
-        }
-
-        # Authorization headers
-        self.admin_token = {
-            "AUTHORIZATION": f"Bearer { os.environ['ADMIN_BEARER_TOKEN'] }"
-        }
-        self.user_token = {
-            "AUTHORIZATION": f"Bearer { os.environ['USER_BEARER_TOKEN'] }"
+            "event_id": 4,
+            "price": 500,
+            "quantity": 50
         }
 
         with self.app.app_context():
-            self.db = SQLAlchemy()
-            self.db.init_app(self.app)
-            # create all tables
-            self.db.create_all()
+            db.create_all()
             initialize_db()
 
     def tearDown(self):
@@ -63,8 +53,7 @@ class EventAppTestCase(unittest.TestCase):
     """
 
     def test_create_event_type(self):
-        res = self.client().post("/api/v1/events/types", json=self.event_t,
-                                 headers=self.admin_token)
+        res = self.client().post("/api/v1/events/types", json=self.event_t)
         self.assertEqual(res.status_code, 200)
 
     def test_update_event_type(self):
@@ -72,14 +61,14 @@ class EventAppTestCase(unittest.TestCase):
         Test Update single event_type success
         """
         res = self.client().patch("/api/v1/events/types/2",
-                                  json=self.event_t, headers=self.admin_token)
+                                  json=self.event_t)
         self.assertEqual(res.status_code, 200)
 
     def test_get_event_type(self):
         """
         Test get single event_type success
         """
-        res = self.client().get("/api/v1/events/types/2", headers=self.admin_token)
+        res = self.client().get("/api/v1/events/types/2")
         self.assertEqual(res.status_code, 200)
 
     def test_get_all_event_types(self):

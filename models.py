@@ -62,7 +62,6 @@ class Events(db.Model):
         db.session.commit()
 
     def update(self):
-        db.session.add(self)
         db.session.commit()
 
     @property
@@ -72,9 +71,8 @@ class Events(db.Model):
             "title": self.title,
             "description": self.description,
             "start_date": self.start_date_time,
-            "address": self.address,
+            "address": self.event_location,
             "image_url": self.image,
-            "price": self.price,
             "event_type_id": self.event_type_id,
             "organizer_id": self.organizer_id,
             "tickets": [ticket.serialize for ticket in self.tickets]
@@ -107,6 +105,9 @@ class Tickets(db.Model):
 
     def insert(self):
         db.session.add(self)
+        db.session.commit()
+
+    def update(self):
         db.session.commit()
 
     @property

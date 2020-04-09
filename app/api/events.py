@@ -24,14 +24,14 @@ This endpoint creates a new event
 :return: returns an event json object
 """
 @api.route("/events", methods=["POST"])
-@requires_auth("create:events")
-def new_event(token):
-    title = request.json.get("title")
-    description = request.json.get("description")
-    event_datetime = request.json.get("start_datetime")
-    event_location = request.json.get("location")
-    attendance_price = request.json.get("price")
-    event_type_id = request.json.get("event_type_id")
+def new_event():
+    title = request.json.get("title", None)
+    description = request.json.get("description", None)
+    event_datetime = request.json.get("start_datetime", None)
+    event_location = request.json.get("location", None)
+    image_url = request.json.get("image_url", None)
+    event_type_id = request.json.get("event_type_id", None)
+    organizer_id = request.json.get("organizer_id", None)
 
     if not title or not description or not event_datetime \
             or not event_location or not event_type_id:
@@ -40,8 +40,11 @@ def new_event(token):
     try:
         new_event = Events(title=title, description=description,
                            start_date_time=event_datetime,
-                           address=event_location,
-                           price=attendance_price, event_type_id=event_type_id)
+                           event_location=event_location,
+                           image=image_url,
+                           organizer_id=organizer_id,
+                           event_type_id=event_type_id
+                           )
         Events.insert(new_event)
         return jsonify(
             {
@@ -52,7 +55,7 @@ def new_event(token):
     except Exception as e:
         print(e)
         db.session.rollback()
-        raise InternalServerError(f"Something went wrong on server: {str(e)}")
+        raise InternalServerError(f"Something went wrong on server")
 
 
 """
@@ -60,8 +63,7 @@ This Retrieve all events types
 :return: returns a list of event json objects
 """
 @api.route("/events")
-@requires_auth("read:events")
-def retrieve_all_events(token):
+def retrieve_all_events():
     try:
         events = Events.query.all()
         return jsonify(
@@ -81,8 +83,7 @@ This endpoint get an event with given id
 :return: returns an event json object corresponding to the event id
 """
 @api.route("/events/<event_id>")
-@requires_auth("read:events")
-def retrieve_single_event(token, event_id):
+def retrieve_single_event(event_id):
     try:
         event = Events.query.filter_by(id=event_id).first()
     except Exception as e:
@@ -105,8 +106,7 @@ This endpoint update an event with given id
 :return: returns an event json object corresponding to the event id
 """
 @api.route("/events/<event_id>", methods=["PATCH"])
-@requires_auth("update:events")
-def update_event_info(token, event_id):
+def update_event_info(event_id):
     title = request.json.get("title")
     description = request.json.get("description")
     event_datetime = request.json.get("start_datetime")
@@ -148,8 +148,7 @@ This endpoint delete an eventwith given id
 :return: returns deleted event Id and success of True
 """
 @api.route("/events/<event_id>", methods=["DELETE"])
-@requires_auth("delete:events")
-def delete_event(token, event_id):
+def delete_event(event_id):
     try:
         event = Events.query.filter_by(id=event_id).first()
     except Exception as e:

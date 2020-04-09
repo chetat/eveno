@@ -44,3 +44,7 @@ class AppTestCase(unittest.TestCase):
     def test_get_users(self):
         res = self.client().get("api/v1/users")
         self.assertTrue(res.status_code, 200)
+
+
+if __name__ == "__main__":
+    unittest.main()
