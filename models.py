@@ -10,6 +10,7 @@ class EventType(db.Model):
     description = db.Column(db.String())
     create_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
+    events = db.relationship("Events", backref="event_type", lazy=True)
 
     def __repr__(self):
         return f"<EventType {self.id} {self.name}>"
@@ -43,10 +44,11 @@ class Events(db.Model):
     description = db.Column(db.String())
     start_date_time = db.Column(
         db.DateTime, index=True, default=datetime.utcnow)
-    address = db.Column(db.String())
+    event_location = db.Column(db.String())
     image = db.Column(db.String())
-    price = db.Column(db.Float)
-    event_type_id = db.Column(db.Integer)
+    event_type_id = db.Column(db.Integer, db.ForeignKey("event_type.id"))
+    organizer_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    tickets = db.relationship("Tickets", backref="events", lazy=True)
 
     def __repr__(self):
         return f"<Events {self.id} {self.title}>"
@@ -73,17 +75,32 @@ class Events(db.Model):
             "address": self.address,
             "image_url": self.image,
             "price": self.price,
-            "event_type_id": self.event_type_id
+            "event_type_id": self.event_type_id,
+            "organizer_id": self.organizer_id,
+            "tickets": [ticket.serialize for ticket in self.tickets]
         }
+
+
+ordered_tickets = db.Table("ordered_tickets",
+                           db.Column("user_id", db.Integer,
+                                     db.ForeignKey("users.id"),
+                                     primary_key=True),
+                           db.Column("ticket_id", db.Integer,
+                                     db.ForeignKey("tickets.id"),
+                                     primary_key=True),
+                           db.Column("created_at", db.DateTime,
+                                     default=datetime.utcnow())
+                           )
 
 
 class Tickets(db.Model):
     __tablename__ = 'tickets'
     id = db.Column(db.Integer, primary_key=True, index=True)
-    event_id = db.Column(db.Integer)
-    attender_email = db.Column(db.String())
+    price = db.Column(db.Float)
     create_at = db.Column(db.DateTime, default=datetime.utcnow(), index=True)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow(), index=True)
+    event_id = db.Column(db.Integer, db.ForeignKey("events.id"))
+    available = db.Column(db.Integer)
 
     def __repr__(self):
         return f"<Ticket {self.id} {self.event_id}> "
@@ -97,9 +114,10 @@ class Tickets(db.Model):
         return {
             "id": self.id,
             "event_id": self.event_id,
-            "attender_email": self.attender_email,
+            "price": self.price,
             "created_at": self.create_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
+            "available": self.available
         }
 
 
@@ -113,6 +131,7 @@ class Users(db.Model):
     password_hash = db.Column(db.String())
     created_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    events = db.relationship('Events', backref='users', lazy=True)
 
     def insert(self):
         db.session.add(self)
@@ -134,7 +153,8 @@ class Users(db.Model):
             "email": self.email,
             "phone": self.phone,
             "created_at": self.created_at,
-            "updated_at": self.updated_at
+            "updated_at": self.updated_at,
+            "events": [event.serialize for event in self.events]
         }
 
     def __repr__(self):
