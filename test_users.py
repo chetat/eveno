@@ -8,7 +8,7 @@ from models import initialize_db
 import unittest
 
 
-class AppTestCase(unittest.TestCase):
+class UsersTestCase(unittest.TestCase):
     """This class represents the Event App test case"""
 
     def setUp(self):
@@ -16,9 +16,8 @@ class AppTestCase(unittest.TestCase):
          Define test variables and initialize app."""
         self.app = create_app(TestingConfig)
         self.client = self.app.test_client
-        print("Hello")
         self.user = {
-            "email": "yekuwilfred@gmail.com",
+            "email": "yeku@gmail.com",
             "firstname": "Yeku Wilfred",
             "lastname": "chetat",
             "phone": "671357962",
@@ -26,10 +25,8 @@ class AppTestCase(unittest.TestCase):
         }
 
         with self.app.app_context():
-            self.db = SQLAlchemy()
-            self.db.init_app(self.app)
             # create all tables
-            self.db.create_all()
+            db.create_all()
             initialize_db()
 
     def tearDown(self):

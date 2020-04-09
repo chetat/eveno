@@ -168,29 +168,32 @@ def initialize_db():
         title="Markup Start",
         description="This is an event I am creating for meeting with friends",
         start_date_time="2020-05-30 15:45",
-        address="Douala Bonamoussadi",
-        price=2000,
-        event_type_id=2
+        event_location="Douala Bonamoussadi",
+        organizer_id=1,
+        event_type_id=2,
+        image="https://github.com/image/hi.png"
     )
     event_2 = Events(
         title="Markup Start",
         description="This is an event I am creating for meeting with friends",
         start_date_time="2020-05-30 15:45",
-        address="Douala Makepe",
-        price=5000,
-        event_type_id=1
+        event_location="Douala Bonamoussadi",
+        organizer_id=1,
+        event_type_id=1,
+        image="https://github.com/image/hi.png"
     )
     event_3 = Events(
         title="Markup Start",
         description="This is an event I am creating for meeting with friends",
         start_date_time="2020-05-30 15:45",
-        address="Douala Bonamoussadi",
-        price=2000,
-        event_type_id=1
+        event_location="Douala Bonamoussadi",
+        organizer_id=1,
+        event_type_id=2,
+        image="https://github.com/image/hi.png"
     )
 
     event_type_1 = EventType(
-        name="TechEvent",
+        name="Culture",
         description="An event related to tech talks and Python programming"
     )
     event_type_2 = EventType(
@@ -200,12 +203,33 @@ def initialize_db():
 
     ticket_1 = Tickets(
         event_id=1,
-        attender_email="yekuwilfred@gmail.com"
+        price=500,
+        available=25
     )
     ticket_2 = Tickets(
         event_id=2,
-        attender_email="chetat@gmail.com"
+        price=500,
+        available=55
     )
+
+    user_1 = Users(
+            email="yekuwilfred@gmail.com",
+            first_name="Yeku Wilfred",
+            last_name="chetat",
+            phone="671357962",
+            password_hash="weezybaby"
+    )
+    user_2 = Users(
+            email="wilfred@gmail.com",
+            first_name="Francine",
+            last_name="chetat",
+            phone="671357962",
+            password_hash="jskdfjdsfhufiuhsdiuidho;shdposfsf787f8s78"
+    )
+
+    # Create Users
+    Users.insert(user_1)
+    Users.insert(user_2)
 
     # Create Event types
     EventType.insert(event_type_1)
