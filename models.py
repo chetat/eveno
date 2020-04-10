@@ -6,6 +6,8 @@ from datetime import datetime
 class Role(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String())
+
+
 class EventType(db.Model):
     __tablename__ = 'event_type'
     id = db.Column(db.Integer, primary_key=True)
@@ -216,18 +218,18 @@ def initialize_db():
     )
 
     user_1 = Users(
-            email="yekuwilfred@gmail.com",
-            first_name="Yeku Wilfred",
-            last_name="chetat",
-            phone="671357962",
-            password_hash="weezybaby"
+        email="yekuwilfred@gmail.com",
+        first_name="Yeku Wilfred",
+        last_name="chetat",
+        phone="671357962",
+        password_hash="weezybaby"
     )
     user_2 = Users(
-            email="wilfred@gmail.com",
-            first_name="Francine",
-            last_name="chetat",
-            phone="671357962",
-            password_hash="jskdfjdsfhufiuhsdiuidho;shdposfsf787f8s78"
+        email="wilfred@gmail.com",
+        first_name="Francine",
+        last_name="chetat",
+        phone="671357962",
+        password_hash="jskdfjdsfhufiuhsdiuidho;shdposfsf787f8s78"
     )
 
     # Create Users

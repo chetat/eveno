@@ -19,7 +19,8 @@ class EventsTestCase(unittest.TestCase):
 
         self.event = {
             "title": "Markup Start",
-            "description": "This is an event I am creating for meeting with friends",
+            "description": "This is an event I am creating fo\
+            r meeting with friends",
             "start_datetime": "2020-05-30 15:45",
             "location": "Douala Bonamoussadi",
             "event_type_id": 1,

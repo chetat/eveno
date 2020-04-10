@@ -1,6 +1,10 @@
 from app.api import api
 from flask import jsonify, request
 from models import db, EventType
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity, decode_token
+)
 from Exceptions import NotFound, MethodNotAllowed, \
     Forbiden, InternalServerError, ExistingResource,\
     BadRequest, AuthError
