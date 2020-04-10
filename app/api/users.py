@@ -1,6 +1,6 @@
 from app.api import api
 from flask import jsonify, request
-from datetime import datetime
+from datetime import datetime, timedelta
 from models import Users
 from app import sqlalchemy as db
 from flask_jwt_extended import (
@@ -58,9 +58,15 @@ and number {phone} exist!"})
         db.session.rollback()
         raise InternalServerError({"error": "Database commit error.\
     Could not process your request!"})
+    access_token = create_access_token(identity=user.id,
+                                       expires_delta=timedelta(hours=24))
 
     return jsonify({"success": True,
-                    "data": user.serialize}), 201
+                    "data": {
+                        "user": user.serialize,
+                        "access_token": access_token
+                        }
+                    }), 201
 
 
 @api.route("/users", methods=['GET'])

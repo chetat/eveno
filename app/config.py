@@ -20,6 +20,7 @@ class Config(object):
     # incoming requests using one and performing background
     # operations using the other.
     THREADS_PER_PAGE = 2
+    SECRET_KEY=os.environ["SECRET_KEY"]
 
 
 class DevelopmentConfig(Config):

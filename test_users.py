@@ -42,6 +42,12 @@ class UsersTestCase(unittest.TestCase):
         res = self.client().get("api/v1/users")
         self.assertTrue(res.status_code, 200)
 
+    def test_invalid_credentials(self):
+        res = self.client().post("api/v1/auth", json={"email": "@mail.com",
+                                                      "password": "weezybaby"
+                                                      })
+        self.assertEqual(res.status_code, 404)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -5,7 +5,6 @@ from datetime import datetime
 from Exceptions import NotFound, MethodNotAllowed, \
     Forbiden, InternalServerError, ExistingResource,\
     BadRequest, AuthError
-from .authhelpers import requires_auth
 
 
 @api.errorhandler(NotFound)

@@ -4,7 +4,6 @@ from models import db, Events, EventType
 from Exceptions import NotFound, MethodNotAllowed, \
     Forbiden, InternalServerError, ExistingResource,\
     BadRequest, AuthError
-from .authhelpers import requires_auth
 
 
 @api.errorhandler(NotFound)

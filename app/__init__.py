@@ -1,15 +1,20 @@
 """"
 Main application directory module
 """
+import os
 from flask import Flask, jsonify
 from app.config import Config
 from flask_sqlalchemy import SQLAlchemy
+from flask_jwt_extended import JWTManager
+from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from pathlib import Path
 
 sqlalchemy = SQLAlchemy()
 migrate = Migrate()
+jwt = JWTManager()
+bcrypt = Bcrypt()
 
 config = Config()
 env_path = Path('.') / '.env'
@@ -32,6 +37,8 @@ def create_app(config_obj=None):
 
 
 def initialize_extentions(app):
+    bcrypt.init_app(app)
+    jwt.init_app(app)
     sqlalchemy.init_app(app)
     migrate.init_app(app, sqlalchemy)
 
