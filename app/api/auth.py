@@ -2,7 +2,7 @@ from flask_bcrypt import generate_password_hash, check_password_hash
 from datetime import timedelta
 from app.api import api
 from models import Users
-from flask import request, jsonify, url_for, abort, current_app, render_template, redirect
+from flask import request, jsonify, url_for, abort, render_template, redirect
 from Exceptions import (NotFound, BadRequest, UnAuthorized,
                         InternalServerError, Forbiden, MethodNotAllowed)
 from flask_jwt_extended import (

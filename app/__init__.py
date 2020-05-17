@@ -10,6 +10,8 @@ from flask_bcrypt import Bcrypt
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from pathlib import Path
+from flask_cors import CORS
+
 
 sqlalchemy = SQLAlchemy()
 migrate = Migrate()
@@ -41,6 +43,7 @@ def initialize_extentions(app):
     jwt.init_app(app)
     sqlalchemy.init_app(app)
     migrate.init_app(app, sqlalchemy)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 def register_blueprints(app):
