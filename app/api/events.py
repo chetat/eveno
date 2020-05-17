@@ -112,6 +112,7 @@ def update_event_info(event_id):
     event_location = request.json.get("location")
     attendance_price = request.json.get("price")
     event_type_id = request.json.get("event_type_id")
+    image_url = request.json.get("image_url")
 
     if not title or not description or not event_datetime \
             or not event_location or not event_type_id:
@@ -132,6 +133,7 @@ def update_event_info(event_id):
         event.location = event_location
         event.price = attendance_price
         event.event_type_id = event_type_id
+        event.image_url = image_url
 
         Events.update(event)
         return jsonify(
