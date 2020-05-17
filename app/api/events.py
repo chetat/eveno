@@ -133,7 +133,7 @@ def update_event_info(event_id):
         event.location = event_location
         event.price = attendance_price
         event.event_type_id = event_type_id
-        event.image_url = image_url
+        event.image = image_url
 
         Events.update(event)
         return jsonify(
