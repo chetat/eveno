@@ -58,7 +58,6 @@ export FLASK_ENV=development //To run the app in debugging mode
 
 **Note:** All endpoints requires Bearer token. JWT tokens are found in **token.txt** file in the root directory of this project
 
-
-
+**Documentation** :https://documenter.getpostman.com/view/6911460/Szt79Vv7?version=latest
 ## Author
 - Yeku Wilfred Chetat
