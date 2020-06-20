@@ -43,8 +43,8 @@ class UsersTestCase(unittest.TestCase):
         self.assertTrue(res.status_code, 200)
 
     def test_invalid_credentials(self):
-        res = self.client().post("api/v1/auth", json={"email": "@mail.com",
-                                                      "password": "weezybaby"
+        res = self.client().post("api/v1/auth", json={"email": "yekuwilfred@gmailcom",
+                                                      "password": "wybaby"
                                                       })
         self.assertEqual(res.status_code, 404)
 

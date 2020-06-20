@@ -42,10 +42,14 @@ def login():
 
     if not user:
         raise NotFound(f"User with email {email} not found")
+
+    if not check_password_hash(user.password_hash, password):
+        raise UnAuthorized("invalid password", 401)
     else:
         user_id = user.serialize.get("id")
         access_token = create_access_token(identity=user_id,
                                            expires_delta=timedelta(hours=24))
+
         return jsonify({
             "success": True,
             "data": {
