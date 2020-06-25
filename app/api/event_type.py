@@ -38,7 +38,7 @@ def new_event_type():
         raise BadRequest("Invalid body provided")
 
     try:
-        new_event_type = EventType(name=name, description=description)
+        new_event_type = EventType(name=name, description=description, image=image)
         EventType.insert(new_event_type)
         return jsonify(new_event_type.serialize)
     except Exception as e:
