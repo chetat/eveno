@@ -32,6 +32,7 @@ This endpoint creates a new event_type
 def new_event_type():
     name = request.json.get("name")
     description = request.json.get("description")
+    image = request.json.get("image")
 
     if not name or not description:
         raise BadRequest("Invalid body provided")
@@ -99,9 +100,9 @@ This endpoint Updates an event_type with given id
 """
 @api.route("/events/types/<type_id>", methods=["PATCH"])
 def update_event_type(type_id):
-    body = request.get_json()
-    name = body["name"]
-    description = body["description"]
+    name = request.json.get("name")
+    description = request.json.get("description")
+    image = request.json.get("image")
 
     if not name or not description:
         raise BadRequest("Invalid body provided")
@@ -117,6 +118,7 @@ def update_event_type(type_id):
     else:
         event_type.name = name
         event_type.description = description
+        event_type.image = image
 
         EventType.update(event_type)
         return jsonify(

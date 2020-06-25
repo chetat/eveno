@@ -16,7 +16,7 @@ class EventType(db.Model):
     create_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     updated_at = db.Column(db.DateTime, index=True, default=datetime.utcnow())
     events = db.relationship("Events", backref="event_type", lazy=True)
-    image = db.Column(db.String, nullable=True)
+    image = db.Column(db.String(), nullable=True)
 
     def __repr__(self):
         return f"<EventType {self.id} {self.name}>"
