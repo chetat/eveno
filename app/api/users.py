@@ -43,8 +43,8 @@ def new_user():
     user_exist = Users.query.filter_by(email=email).first()
 
     if user_exist:
-        raise ExistingResource({"error": f"User with email {email}\
-and number {phone} exist!"})
+        raise ExistingResource({"error": f"""User with email {email} 
+                                          and number {phone} exist!"""})
     else:
         hashed_password = generate_password_hash(password).decode('utf-8')
         user = Users(first_name=firstname,
@@ -55,6 +55,7 @@ and number {phone} exist!"})
     try:
         Users.insert(user)
     except Exception as e:
+        print(e)
         db.session.rollback()
         raise InternalServerError({"error": "Database commit error.\
     Could not process your request!"})
