@@ -58,7 +58,7 @@ def retrieve_all_events_types():
     except Exception as e:
         print(e)
         raise InternalServerError(
-            "Internal Server Error! Could not retrieve users.")
+            f"Internal Server Error! Could not retrieve users.")
 
     return jsonify(
         {
