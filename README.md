@@ -1,6 +1,6 @@
 # Eveno
 Eveno is an event booking app the helps users organize events in different location around the world. Users can View or get registered to an event in a choosen location.
-
+Frontend: https://github.com/chetat/eveno-fe
 ## Getting Started
 
 ### Installing Dependencies
