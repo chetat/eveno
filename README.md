@@ -40,7 +40,8 @@ Each time you open a new terminal session, run:
 
 ```bash
 export FLASK_APP=run.py 
-export FLASK_ENV=development //To run the app in debugging mode 
+export FLASK_ENV=development //To run the app in debugging mode
+flask run
 ```
 
 ## Roles and Permissions:
